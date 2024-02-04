@@ -1,5 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 
 const form = useForm({
   concepto: '',
@@ -12,6 +13,7 @@ defineProps(['cuentas_bancarias', 'movimientos']);
 </script>
 
 <template>
+    <AppLayout title="CreateMovimientos">
   <div class="bg-gradient-to-r from-blue-800 text-white min-h-screen flex items-center justify-center">
     <div class="max-w-md mx-auto p-8 bg-black rounded shadow-lg">
       <h1 class="text-3xl font-bold mb-6">Crear un movimiento</h1>
@@ -87,4 +89,5 @@ defineProps(['cuentas_bancarias', 'movimientos']);
       </ul>
     </div>
   </div>
+</AppLayout>
 </template>

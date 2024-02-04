@@ -1,14 +1,19 @@
 <script setup>
 
+import AppLayout from '@/Layouts/AppLayout.vue';
+
 defineProps({
     movimientos: Object,
 });
+
 
 let baseImage = "https://picsum.photos/200/300?random=";
 
 </script>
 
 <template>
+<div>
+    <AppLayout title="Movimientos">
 
     <div class="bg-gradient-to-r from-blue-800 to-blue-400 min-h-screen p-8">
         <div class="max-w-2xl mx-auto">
@@ -28,5 +33,9 @@ let baseImage = "https://picsum.photos/200/300?random=";
         </ul>
         </div>
     </div>
+
+    </AppLayout>
+</div>
+
 
 </template>
