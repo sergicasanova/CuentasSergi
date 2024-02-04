@@ -1,0 +1,59 @@
+Apuntes:
+
+- Pedido utilizado para crear controllers:
+    php artisan make:controller UserController
+
+- Pedido utilizado para crear migraciones:
+   º php artisan make:migration nombre_migracion
+
+    si detecta el nombre create en el nombre de la migracion finaliza con table, instuye
+    que se trata de crear una tabla nueva.
+   º php artisan make:migration crear_tabla_prueba
+
+    EJ: esta migracion crea una tabla con un parametro adicional:
+   º php artisan make:migration crear_tabla_pedidos --create=pedidos
+
+    EJ: esta otra modifica una tabla ya existente:
+   º php artisan make:migration nuevo_campo_usuario --table=usuarios
+
+    - para ejecutar las migraciones,
+    php artisan migrate
+    -para desacer las migraciones:
+    php artisan migrate:rollback
+    -para reestablecer las migraciones desechas de este lote:
+    php artisan migrate:rollback --step=2
+    -elimina todas las migraciones realizadas y vuelve a ejecutarlas:
+    php artisan migrate:fresh
+
+
+    -comando para crear modelos:
+    php artisan make:model "movimientos"
+    Por convención, los modelos se crean con un nombre en singular,
+    empezando por mayúscula, y se ubican en la carpeta app\Models
+
+    creado el controlador y el modelo con:
+    php artisan make:model -cr Libro
+    lo creas todo a la vez
+    # Genera model, migration, factory, seeder, policy, controller and form requests...
+    php artisan make:model Libro --all
+
+
+    Para obtener el teléfono de un usuario, puede hacerse así:
+    $telefono = Usuario::findOrFail($id)->telefono;
+
+    iniciar servidor
+    php artisan serve
+
+    iniciar base de datos
+    compose up
+
+    arrancar el frontend
+    npm run dev
+
+    php artisan make:seeder MovimientosSeeder
+
+    en factories reyenar con datos, fabrica los datos
+
+    php artisan migrate:fresh --seed
+    php artisan db:seed
+    php artisan db:seed --class=LibrosSeeder
