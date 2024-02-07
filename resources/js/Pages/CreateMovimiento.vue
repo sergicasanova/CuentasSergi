@@ -81,12 +81,6 @@ defineProps(['cuentas_bancarias', 'movimientos']);
         </button>
       </form>
 
-      <!-- Muestra la lista de movimientos -->
-      <ul class="mt-8">
-        <li v-for="movimiento in movimientos" :key="movimiento.id" class="mb-2">
-          {{ movimiento.concepto }} - {{ movimiento.cantidad }} - {{ movimiento.tipo }} - {{ movimiento.cuentas_bancarias_id }}
-        </li>
-      </ul>
     </div>
   </div>
 </AppLayout>

@@ -1,11 +1,14 @@
 <script setup>
 
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Modal from './Modal.vue';
+import { ref } from 'vue';
 
 defineProps({
     movimientos: Object,
 });
 
+const showModal = ref(false)
 
 let baseImage = "https://picsum.photos/200/300?random=";
 
@@ -14,26 +17,36 @@ let baseImage = "https://picsum.photos/200/300?random=";
 <template>
 <div>
     <AppLayout title="Movimientos">
+        <div class="flex bg-gradient-to-r from-blue-800 to-blue-400 min-h-screen p-8 space-x-4">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-3xl font-semibold text-white mb-6">Listado de movimientos</h1>
 
-    <div class="bg-gradient-to-r from-blue-800 to-blue-400 min-h-screen p-8">
-        <div class="max-w-2xl mx-auto">
-        <h1 class="text-3xl font-semibold text-white mb-6">Listado de movimientos</h1>
-
-        <ul class="grid grid-cols-1 md:grid-cols-2  gap-4">
-            <li class="bg-white p-6 rounded-lg shadow-md flex" v-for="movimiento in movimientos" :key="movimiento.id">
-            <div class="flex-shrink-0">
-                <img class="w-24 h-36 object-cover rounded" :src="`${baseImage}${movimiento.id}`" alt="Portada del Llibre">
+                <ul class="grid grid-cols-3 gap-4">
+                    <li class="bg-white p-6 rounded-lg shadow-md flex relative" v-for="movimiento in movimientos" :key="movimiento.id">
+                        <div class="flex-shrink-0">
+                            <img class="w-24 h-36 object-cover rounded" :src="`${baseImage}${movimiento.id}`" alt="Portada del Llibre">
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-xl font-semibold mb-2">{{ movimiento.concepto }}</h2>
+                            <p class="text-blue-700">{{ movimiento.cantidad }}</p>
+                            <p class="text-blue-700 font-semibold">{{ movimiento.tipo }} €</p>
+                        </div>
+                        <div class="absolute top-0 right-0 mt-2 mr-2">
+                            <button ><i class="fas fa-trash"></i></button>
+                            <button class="ml-2" id="show-modal" @click="showModal = true"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </li>
+                </ul>
             </div>
-                <div class="ml-4">
-                <h2 class="text-xl font-semibold mb-2">{{ movimiento.concepto }}</h2>
-                <p class="text-blue-700">{{ movimiento.cantidad }}</p>
-                <p class="text-blue-700 font-semibold">{{ movimiento.tipo }} €</p>
-            </div>
-            </li>
-        </ul>
         </div>
-    </div>
-
+        <Teleport to="body">
+            <!-- use the modal component, pass in the prop -->
+            <modal :show="showModal" @close="showModal = false">
+                <template #header>
+                    <h3>custom header</h3>
+                </template>
+            </modal>
+        </Teleport>
     </AppLayout>
 </div>
 

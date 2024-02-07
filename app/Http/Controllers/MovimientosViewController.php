@@ -74,6 +74,10 @@ class MovimientosViewController extends Controller
      */
     public function destroy(movimientos $movimientos)
     {
-        //
+        $movimientos->delete();
+        return response()->json([
+            'message' => 'movimientos borrado',
+            'movimientos' => $movimientos
+        ]);
     }
 }

@@ -37,16 +37,6 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/movimientos', function () {
-        return Inertia::render('ListadoMovimientos');
-    })->name('movimientos.index');
-});
+Route::resource('movimientos', MovimientosViewController::class)->middleware('auth');
 
-Route::resource('movimientos', MovimientosViewController::class);
 
-Route::get('/movimientos/create', [MovimientosViewController::class, 'create'])->name('movimientos.create');
