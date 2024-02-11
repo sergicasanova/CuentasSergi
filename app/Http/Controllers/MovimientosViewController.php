@@ -18,7 +18,6 @@ class MovimientosViewController extends Controller
     $user_id = auth()->id();
 
     // Obtener los IDs de las cuentas bancarias del usuario
-    //pluck() en Laravel se utiliza para obtener una colección de valores de una única columna de la tabla de la base de datos
     $cuentas_bancarias_ids = cuentas_bancarias::where('user_id', $user_id)->pluck('id');
 
     // Obtener los movimientos que coinciden con los IDs de las cuentas bancarias del usuario
@@ -67,7 +66,8 @@ class MovimientosViewController extends Controller
      */
     public function edit(movimientos $movimientos)
     {
-        //
+        // Aquí cargamos el movimiento que se va a editar y lo enviamos a la vista
+        return Inertia::render('EditMovimiento', ['movimientos' => $movimientos]);
     }
 
     /**
@@ -75,18 +75,29 @@ class MovimientosViewController extends Controller
      */
     public function update(Request $request, movimientos $movimientos)
     {
-        //
+        // Validamos los datos del formulario
+        $data = $request->validate([
+            'concepto' => ['required', 'string', 'max:255'],
+            'cantidad' => ['required', 'numeric', 'min:0', 'max:9999.99'],
+            'tipo' => ['required', 'in:gasto,ingreso'],
+            'cuentas_bancarias_id' => ['required', 'exists:cuentas_bancarias,id'],
+        ]);
+
+        // Actualizamos el movimiento con los datos proporcionados
+        $movimientos->update($data);
+
+        // Redireccionamos al listado de movimientos
+        return redirect()->route('movimientos.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(movimientos $movimientos)
+        public function destroy(movimientos $movimientos)
     {
-        $movimientos->delete();
-        return response()->json([
-            'message' => 'movimientos borrado',
-            'movimientos' => $movimientos
-        ]);
+            $movimientos->delete();
+            return response()->json([
+                'message' => 'Movimiento borrado correctamente',
+            ]);
     }
 }

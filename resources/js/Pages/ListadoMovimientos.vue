@@ -3,13 +3,21 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Modal from './Modal.vue';
 import { ref } from 'vue';
+import axios from 'axios';
 
-defineProps({
-    movimientos: Object,
-});
+defineProps(['cuentas_bancarias', 'movimientos']);
 
 const showModal = ref(false)
 
+const eliminarMovimiento = async (id) => {
+  try {
+    await axios.delete(`/movimientos/${id}`);
+    console.log('Movimiento eliminado correctamente');
+    // Aquí puedes realizar cualquier acción adicional después de eliminar el movimiento, como recargar la lista de movimientos
+  } catch (error) {
+    console.error('Error al eliminar el movimiento:', error);
+  }
+};
 let baseImage = "https://picsum.photos/200/300?random=";
 
 </script>
@@ -30,9 +38,10 @@ let baseImage = "https://picsum.photos/200/300?random=";
                             <h2 class="text-xl font-semibold mb-2">{{ movimiento.concepto }}</h2>
                             <p class="text-blue-700">{{ movimiento.cantidad }}</p>
                             <p class="text-blue-700 font-semibold">{{ movimiento.tipo }} €</p>
+                            <p class="text-blue-700">id cuenta bancaria: {{ movimiento.cuentas_bancarias_id }}</p>
                         </div>
                         <div class="absolute top-0 right-0 mt-2 mr-2">
-                            <button ><i class="fas fa-trash"></i></button>
+                            <button @click="eliminarMovimiento(movimiento.id)"><i class="fas fa-trash"></i></button>
                             <button class="ml-2" id="show-modal" @click="showModal = true"><i class="fas fa-edit"></i></button>
                         </div>
                     </li>

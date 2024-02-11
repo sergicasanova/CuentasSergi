@@ -17,6 +17,7 @@ class Movimientos extends Model
         'cantidad',
         'tipo',
         'cuentas_bancarias_id', // Agrega la clave foránea a los fillables
+        'cuentas_bancarias_nombre'
     ];
 
     public function cuentaBancaria()
