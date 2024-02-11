@@ -69,9 +69,8 @@ defineProps(['cuentas_bancarias', 'movimientos']);
             id="cuentas_bancarias_id"
             class="w-full px-4 py-2 border rounded bg-blue-800 text-black"
           >
-            <option value="">Selecciona una cuenta bancaria</option>
             <option v-for="cuenta in cuentas_bancarias" :key="cuenta.id" :value="cuenta.id">
-              {{ cuenta.nombre_cuenta }}
+             {{ cuenta.nombre_cuenta }}
             </option>
           </select>
         </div>

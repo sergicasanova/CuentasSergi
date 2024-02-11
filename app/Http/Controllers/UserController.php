@@ -12,6 +12,8 @@ class UserController extends Controller
 {
     public function index()
     {
+       /*  $userId = auth()->id();
+        return User::select('select * from users where id=?', [$userId]) ->get(); */
         return User::get();
     }
 

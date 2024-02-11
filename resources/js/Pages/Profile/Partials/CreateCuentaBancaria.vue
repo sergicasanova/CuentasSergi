@@ -8,84 +8,82 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
-const passwordInput = ref(null);
-const currentPasswordInput = ref(null);
+const cuentasInput = ref(null);
 
 const form = useForm({
     iban: '',
     nombre_cuenta: '',
     entidad: '',
     saldo: '',
-    user_id: '',
 });
 
-const updatePassword = () => {
-    form.put(route('user-password.update'), {
-        errorBag: 'updatePassword',
+const updateCuentasBancarias = () => {
+    form.post(route('cuentasbancarias.store'), {
+        errorBag: 'updateCuentas',
         preserveScroll: true,
         onSuccess: () => form.reset(),
         onError: () => {
-            if (form.errors.password) {
-                form.reset('password', 'password_confirmation');
-                passwordInput.value.focus();
+            if (form.errors.iban) {
+                form.reset('iban');
+                cuentasInput.value.focus();
             }
 
-            if (form.errors.current_password) {
-                form.reset('current_password');
-                currentPasswordInput.value.focus();
-            }
+            // Puedes manejar otros errores aquí si es necesario
         },
     });
 };
 </script>
 
 <template>
-    <FormSection @submitted="updatePassword">
+    <FormSection @submitted="updateCuentasBancarias">
         <template #title>
-            Update Password
+            Introduce tus cuentas bancarias
         </template>
 
         <template #description>
-            Ensure your account is using a long, random password to stay secure.
+            Añade tus cuentas bancarias para gestionar tus finanzas.
         </template>
 
         <template #form>
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel for="iban" value="IBAN" />
                 <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    type="password"
+                    id="iban"
+                    ref="cuentasInput"
+                    v-model="form.iban"
                     class="mt-1 block w-full"
-                    autocomplete="current-password"
                 />
-                <InputError :message="form.errors.current_password" class="mt-2" />
+                <InputError :message="form.errors.iban" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password" value="New Password" />
+                <InputLabel for="nombre_cuenta" value="Nombre de Cuenta" />
                 <TextInput
-                    id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    type="password"
+                    id="nombre_cuenta"
+                    v-model="form.nombre_cuenta"
                     class="mt-1 block w-full"
-                    autocomplete="new-password"
                 />
-                <InputError :message="form.errors.password" class="mt-2" />
+                <InputError :message="form.errors.nombre_cuenta" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="entidad" value="Entidad" />
                 <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
+                    id="entidad"
+                    v-model="form.entidad"
                     class="mt-1 block w-full"
-                    autocomplete="new-password"
                 />
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                <InputError :message="form.errors.entidad" class="mt-2" />
+            </div>
+
+            <div class="col-span-6 sm:col-span-4">
+                <InputLabel for="saldo" value="Saldo" />
+                <TextInput
+                    id="saldo"
+                    v-model="form.saldo"
+                    class="mt-1 block w-full"
+                />
+                <InputError :message="form.errors.saldo" class="mt-2" />
             </div>
         </template>
 

@@ -18,7 +18,7 @@ class cuentas_bancarias extends Model
         'nombre_cuenta',
         'entidad',
         'saldo',
-        'users_id', // Agrega la clave foránea a los fillables
+        'user_id', // Agrega la clave foránea a los fillables
     ];
     public $timestamps = true;
 
@@ -26,7 +26,7 @@ class cuentas_bancarias extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'users_id'); // Asegúrate de establecer correctamente la clave foránea
+        return $this->belongsTo(User::class, 'user_id'); // Asegúrate de establecer correctamente la clave foránea
     }
 
     public function movimientos()

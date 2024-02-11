@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CuentasBancariasController;
 use App\Http\Controllers\MovimientosViewController;
+use App\Models\cuentas_bancarias;
 use App\Models\Movimientos;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,5 +40,5 @@ Route::middleware([
 });
 
 Route::resource('movimientos', MovimientosViewController::class)->middleware('auth');
-
+Route::resource('cuentasbancarias', CuentasBancariasController::class)->middleware('auth');
 

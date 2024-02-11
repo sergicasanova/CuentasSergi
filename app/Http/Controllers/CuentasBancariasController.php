@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\cuentas_bancarias;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Storecuentas_bancariasRequest;
 use App\Http\Requests\Updatecuentas_bancariasRequest;
+use App\Http\Requests\Storecuentas_bancariasRequest;
+
 
 class CuentasBancariasController extends Controller
 {
@@ -14,7 +16,9 @@ class CuentasBancariasController extends Controller
      */
     public function index()
     {
-        return cuentas_bancarias::get();
+        $user_id = auth()->id();
+        $cuentasBancarias = cuentas_bancarias::where('user_id', $user_id)->get();
+        return response()->json($cuentasBancarias);
     }
 
     /**
@@ -28,9 +32,27 @@ class CuentasBancariasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Storecuentas_bancariasRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'iban' => 'required',
+            'nombre_cuenta' => 'required',
+            'entidad' => 'required',
+            'saldo' => 'required',
+        ]);
+
+        // Crear una nueva cuenta bancaria asociada al ID del usuario autenticado
+        $request->user()->cuentaBancaria()->create($request->all());
+
+        return redirect()->back()->with('success', 'Cuenta bancaria creada exitosamente.');
+    }
+
+    public function getCuentasBancariasByUserId()
+    {
+        $user_id = auth()->id();
+        $cuentasBancarias = cuentas_bancarias::where('user_id', $user_id)->get();
+        return response()->json($cuentasBancarias);
     }
 
     /**
@@ -52,9 +74,33 @@ class CuentasBancariasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updatecuentas_bancariasRequest $request, cuentas_bancarias $cuentas_bancarias)
+    public function update(Updatecuentas_bancariasRequest $request, cuentas_bancarias $cuentas_bancaria)
+
     {
-        //
+        // Obtener el usuario actual de la solicitud HTTP
+        $user = Request::user();
+        print("update hihihihih");
+        // Validar los datos del formulario
+        $request->validate([
+            'iban' => 'required',
+            'nombre_cuenta' => 'required',
+            'entidad' => 'required',
+            'saldo' => 'required',
+            'current_password' => 'required|password',
+        ]);
+
+        // Crear o actualizar la cuenta bancaria del usuario
+        $user->cuentas_bancarias()->updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'iban' => $request->iban,
+                'nombre_cuenta' => $request->nombre_cuenta,
+                'entidad' => $request->entidad,
+                'saldo' => $request->saldo,
+            ]
+        );
+
+        return redirect()->back()->with('success', 'Cuenta bancaria actualizada exitosamente.');
     }
 
     /**

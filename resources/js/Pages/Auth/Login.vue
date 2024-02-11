@@ -26,8 +26,7 @@ const submit = () => {
     })).post(route('login'), {
         onFinish: (res) => {form.reset('password')
     localStorage.setItem('userlogged', res.data.email)
-    console.log(localStorage.getItem('userlogged'))},
-    });
+    }});
 };
 
 </script>

@@ -14,17 +14,26 @@ class MovimientosViewController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //dd(Movimientos::get());
-        return Inertia::render('ListadoMovimientos',['movimientos' => movimientos::get()]);
-    }
+{
+    $user_id = auth()->id();
+
+    // Obtener los IDs de las cuentas bancarias del usuario
+    //pluck() en Laravel se utiliza para obtener una colección de valores de una única columna de la tabla de la base de datos
+    $cuentas_bancarias_ids = cuentas_bancarias::where('user_id', $user_id)->pluck('id');
+
+    // Obtener los movimientos que coinciden con los IDs de las cuentas bancarias del usuario
+    $movimientos = movimientos::whereIn('cuentas_bancarias_id', $cuentas_bancarias_ids)->get();
+
+    return Inertia::render('ListadoMovimientos', ['movimientos' => $movimientos]);
+}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return Inertia::render('CreateMovimiento', ['cuentas_bancarias' => cuentas_bancarias::get()]);
+        $user_id = auth()->id();
+        return Inertia::render('CreateMovimiento', ['cuentas_bancarias' => cuentas_bancarias::where('user_id', $user_id)->get()]);
     }
 
     /**
